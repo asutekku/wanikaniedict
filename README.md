@@ -4,7 +4,7 @@ This is a repository for my "Edict dictinary in Wanikani order" csv file and for
 
 The file includes the all the words included in the edict dictionary that can be constructed using Kanjis learned through the Wanikani order. This file includes all of the kanjis not yet included in Wanikani but are in the JLPT N1. Each level after 60 has 33 kanjis in them, except for level 68 which has 30. Words constructed only out of hiragana or katakana are excluded from this file.
 
-In total there are 128,327 words in the file. Learning all of these is almost impossible but you are free to try. Who there is to stop you? No one!
+In total there are 133,106 words in the file. Learning all of these is almost impossible but you are free to try. Who there is to stop you? No one!
 
 You are free to use the file and the script however you want, just please credit me if you use it somewhere.
 

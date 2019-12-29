@@ -12,14 +12,20 @@ distribution = list(map(lambda x: len(x), wk))
 
 def main():    
     start = time.time()
-    dictionary = getDictionary()
-    output = open("output.csv","w+",encoding="utf-8")
-    deck = buildDeck(dictionary)
+
+    #dictionary = getDictionary()
+    deck = buildDeck(getDictionary())
+    level = 1
+    
+    output = open(f"output/level_{level}.csv","w+",encoding="utf-8")
     for kanji in deck: 
-        if kanji is not None:
-            for word in kanji:
-                line = "|".join(map(str, word))
-                output.write(f"{line}")
+        for word in kanji:
+            # To output single file, comment out this condition
+            if word[1] > level:
+                output = open(f"output/level_{word[1]}.csv","w+",encoding="utf-8")
+                level = word[1]
+            line = "|".join(map(str, word))
+            output.write(f"{line}")
     end = time.time()
     print(f"Done! Time elapsed: {end - start}s")
 
@@ -35,27 +41,24 @@ def buildDeck(dictionary):
     for word in dictionary:
         uniq = word[0].split(";")[0]
         cleaned = extract_unicode_block(kanji, uniq)
-        highestIndex = getHardestKanjiIndex(cleaned,kanjistring)
-        if highestIndex != -1:
-            highestKanji = kanjistring[highestIndex]
-            level = getLevelFromKanji(highestIndex)
+        index = getHighestIndex(cleaned,kanjistring)
+        if index != -1:
+            highestKanji = kanjistring[index]
+            level = getLevelFromKanji(index)
             entry = [highestKanji,level,word[0],word[1],word[2]]
-            if deck[highestIndex] != None:
-                deck[highestIndex].append(entry)
+            if deck[index] != None:
+                deck[index].append(entry)
             else:
-                deck[highestIndex] = [entry]
-    return deck
+                deck[index] = [entry]
+    return [i for i in deck if i] 
 
-def getHardestKanjiIndex(word,kanjilist):
-    highestLevel = -1
-    if len(word) == 1: return kanjilist.find(word[0])
+def getHighestIndex(word, lst):
+    found = -1
     for char in word:
-        characterIndex = kanjilist.find(char)
-        if characterIndex == -1:
-            return -1
-        if characterIndex > highestLevel:
-            highestLevel = characterIndex
-    return highestLevel
+        index = lst.find(char)
+        found = index if index != -1 else -1
+        if found == -1: return -1
+    return found
 
 def getLevelFromKanji(i):
     total = 0
